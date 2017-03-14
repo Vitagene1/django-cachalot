@@ -23,6 +23,9 @@ VALID_DATABASE_ENGINES = {
     'transaction_hooks.backends.postgis',
     'transaction_hooks.backends.postgresql_psycopg2',
     'transaction_hooks.backends.mysql',
+
+    # hack check compatible salesforce.backend with django-cachalot, we non't want to use they together
+    'salesforce.backend',
 }
 
 

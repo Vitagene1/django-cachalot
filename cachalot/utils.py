@@ -17,6 +17,9 @@ from django.utils.six import text_type, binary_type
 from .settings import cachalot_settings
 from .transaction import AtomicCache
 
+from django.apps import apps
+from salesforce.models import Model as SFModel
+
 
 DJANGO_GTE_1_9 = django_version[:2] >= (1, 9)
 
@@ -170,6 +173,12 @@ def _get_tables(query, db_alias):
 
     if not are_all_cachable(tables):
         raise UncachableQuery
+
+    exclude_tables = next((m._meta.db_table for m in apps.get_models() if isinstance(m, SFModel)), None)
+    for table in tables:
+        if table in exclude_tables:
+            raise UncachableQuery
+
     return tables
 
 
