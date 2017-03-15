@@ -18,10 +18,10 @@ from .settings import cachalot_settings
 from .transaction import AtomicCache
 
 from django.apps import apps
-import django
-from salesforce.models import SalesforceModelBase as SFModel
+# import django
 
-django.setup()
+
+# django.setup()
 
 DJANGO_GTE_1_9 = django_version[:2] >= (1, 9)
 
@@ -159,6 +159,7 @@ def filter_cachable(tables):
 
 
 def _get_tables(query, db_alias):
+    from salesforce.models import SalesforceModelBase as SFModel
     if ('?' in query.order_by and not cachalot_settings.CACHALOT_CACHE_RANDOM) \
             or query.select_for_update:
         raise UncachableQuery
