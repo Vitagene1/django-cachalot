@@ -18,7 +18,7 @@ from .settings import cachalot_settings
 from .transaction import AtomicCache
 
 from django.apps import apps
-from salesforce.models import Model as SFModel
+from salesforce.models import SalesforceModelBase as SFModel
 
 
 DJANGO_GTE_1_9 = django_version[:2] >= (1, 9)
