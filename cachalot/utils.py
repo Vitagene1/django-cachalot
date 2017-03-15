@@ -18,8 +18,10 @@ from .settings import cachalot_settings
 from .transaction import AtomicCache
 
 from django.apps import apps
+import django
 from salesforce.models import SalesforceModelBase as SFModel
 
+django.setup()
 
 DJANGO_GTE_1_9 = django_version[:2] >= (1, 9)
 
@@ -39,6 +41,7 @@ UNCACHABLE_FUNCS = set()
 if DJANGO_GTE_1_9:
     from django.db.models.functions import Now
     from django.contrib.postgres.functions import TransactionNow
+
     UNCACHABLE_FUNCS.update((Now, TransactionNow))
 
 try:
