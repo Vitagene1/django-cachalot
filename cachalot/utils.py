@@ -176,7 +176,7 @@ def _get_tables(query, db_alias):
     exclude_table_names = [m._meta.db_table for m in apps.get_models() if isinstance(m, SFModel)]
     for table_name in tables_to_cache:
         if table_name in exclude_table_names:
-            'table with table name {} not allow to cache'.format(table_name)
+            print('table with table name {} not allow to cache'.format(table_name))
             exit()
 
     if not are_all_cachable(tables):
