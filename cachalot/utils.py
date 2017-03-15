@@ -18,10 +18,7 @@ from .settings import cachalot_settings
 from .transaction import AtomicCache
 
 from django.apps import apps
-# import django
 
-
-# django.setup()
 
 DJANGO_GTE_1_9 = django_version[:2] >= (1, 9)
 
@@ -175,13 +172,15 @@ def _get_tables(query, db_alias):
         additional_tables = _get_tables_from_sql(connections[db_alias], sql)
         tables.update(additional_tables)
 
+    tables_to_cache = cachalot_settings.CACHALOT_ONLY_CACHABLE_TABLES
+    exclude_table_names = [m._meta.db_table for m in apps.get_models() if isinstance(m, SFModel)]
+    for table_name in tables_to_cache:
+        if table_name in exclude_table_names:
+            'table with table name {} not allow to cache'.format(table_name)
+            exit()
+
     if not are_all_cachable(tables):
         raise UncachableQuery
-
-    exclude_tables = next((m._meta.db_table for m in apps.get_models() if isinstance(m, SFModel)), None)
-    for table in tables:
-        if table in exclude_tables:
-            raise UncachableQuery
 
     return tables
 
