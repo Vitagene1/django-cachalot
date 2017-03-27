@@ -89,6 +89,8 @@ def _patch_write_compiler(original):
     @_unset_raw_connection
     def inner(write_compiler, *args, **kwargs):
         db_alias = write_compiler.using
+        if db_alias == 'salesforce':
+            return
         table = write_compiler.query.get_meta().db_table
         if is_cachable(table):
             invalidate(table, db_alias=db_alias,
