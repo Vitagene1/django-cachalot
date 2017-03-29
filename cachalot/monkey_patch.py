@@ -67,7 +67,7 @@ def _patch_compiler(original):
     def inner(compiler, *args, **kwargs):
         execute_query_func = lambda: original(compiler, *args, **kwargs)
         if not cachalot_settings.CACHALOT_ENABLED \
-                or isinstance(compiler, WRITE_COMPILERS):
+                or isinstance(compiler, WRITE_COMPILERS) or compiler.using == 'salesforce':
             return execute_query_func()
 
         try:
@@ -90,7 +90,7 @@ def _patch_write_compiler(original):
     def inner(write_compiler, *args, **kwargs):
         db_alias = write_compiler.using
         if db_alias == 'salesforce':
-            return
+            return original(write_compiler, *args, **kwargs)
         table = write_compiler.query.get_meta().db_table
         if is_cachable(table):
             invalidate(table, db_alias=db_alias,
