@@ -8,9 +8,10 @@ from time import time
 from django.db.backends.utils import CursorWrapper
 from django.db.models.query import EmptyResultSet
 from django.db.models.signals import post_migrate
-from django.db.models.sql.compiler import (
-    SQLCompiler, SQLInsertCompiler, SQLUpdateCompiler, SQLDeleteCompiler,
-)
+# from django.db.models.sql.compiler import (
+#     SQLCompiler, SQLInsertCompiler, SQLUpdateCompiler, SQLDeleteCompiler,
+# )
+from salesforce.backend.compiler import SQLCompiler, SQLInsertCompiler, SQLUpdateCompiler, SQLDeleteCompiler
 from django.db.transaction import Atomic, get_connection
 from django.utils.six import binary_type
 
